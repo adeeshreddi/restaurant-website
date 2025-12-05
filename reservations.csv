@@ -1,0 +1,13 @@
+id,timestamp_iso,name,phone,email,guests,date,time,email_status,sms_status
+8dcd4985-5a4f-478a-b93d-f231da79e0ba,2025-12-04T19:18:21.913094,AADEESH Reddi,+917660916541,aadeeshreddi@gmail.com,2,2025-12-07,10:40,not_sent,not_sent
+status_update_for:8dcd4985-5a4f-478a-b93d-f231da79e0ba,2025-12-04T19:18:27.383156,,,,,,,sent,error:TwilioRestException
+fdd8fc51-3bed-49a5-912d-d7907c8a9651,2025-12-04T19:38:14.524133,AADEESH Reddi,+917660916541,aadeeshreddi@gmail.com,2,2025-12-07,11:30 AM,not_sent,not_sent
+status_update_for:fdd8fc51-3bed-49a5-912d-d7907c8a9651,2025-12-04T19:38:21.306384,,,,,,,sent,error:TwilioRestException
+f4ad6fe3-1607-4ddc-a229-cfe4aff75130,2025-12-04T19:49:30.605857,AADEESH Reddi,+917660916541,aadeeshreddi@gmail.com,2,2025-12-07,11:30 AM,not_sent,not_sent
+status_update_for:f4ad6fe3-1607-4ddc-a229-cfe4aff75130,2025-12-04T19:49:36.391924,,,,,,,sent,error:TwilioRestException
+5aa08346-fad6-451a-85eb-13ddfc9b2729,2025-12-04T20:00:04.475217,AADEESH Reddi,+917660916541,aadeeshreddi@gmail.com,2,2025-12-07,11:30 AM,not_sent,not_sent
+status_update_for:5aa08346-fad6-451a-85eb-13ddfc9b2729,2025-12-04T20:00:10.703882,,,,,,,sent,error:TwilioRestException
+91e6d3fd-d490-4e62-bf6b-5bcc250de79c,2025-12-05T09:22:33.450551,trishul reddy,9515327496,trishulreddy80@gmail.com,2,2025-12-07,07:00 PM,not_sent,not_sent
+status_update_for:91e6d3fd-d490-4e62-bf6b-5bcc250de79c,2025-12-05T09:22:38.670008,,,,,,,sent,error:TwilioRestException
+9aa8c8aa-fb57-46b7-ba0c-0c78ca3d9655,2025-12-05T09:23:04.095467,AADEESH Reddi,+917660916541,aadeeshreddi@gmail.com,2,2025-12-07,07:00 PM,not_sent,not_sent
+status_update_for:9aa8c8aa-fb57-46b7-ba0c-0c78ca3d9655,2025-12-05T09:23:08.307922,,,,,,,sent,error:TwilioRestException

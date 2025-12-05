@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Babylon — Gallery (Cinematic)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+  /* ---------- page basics ---------- */
+  :root{
+    --accent:#ff5f95;
+    --bg-dark: #050406;
+    --muted: #bfb0b3;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:#fff7fb;color:#241a1c}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:rgba(255,255,255,0.95);position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(245,199,217,0.06)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(160deg,var(--accent),#ff8fb0);display:flex;align-items:center;justify-content:center;color:white;font-family:'Playfair Display',serif;font-weight:700}
+  nav a{margin-left:14px;text-decoration:none;color:#241a1c;font-weight:600}
+  nav a.active{color:var(--accent)}
+
+  .intro{max-width:1100px;margin:28px auto 6px;padding:0 20px;text-align:center}
+  .intro h2{font-family:'Playfair Display',serif;font-size:30px;margin:0;color:#241a1c}
+  .intro p{margin:10px auto 0;color:var(--muted);max-width:780px}
+
+  /* ---------- gallery grid ---------- */
+  .grid{max-width:1200px;margin:26px auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .thumb{border-radius:12px;overflow:hidden;border:1px solid rgba(245,199,217,0.12);box-shadow:0 12px 36px rgba(11,8,10,0.06);background:#fff}
+  .thumb img{width:100%;height:260px;object-fit:cover;display:block;cursor:pointer;transition:transform .34s ease}
+  .thumb:hover img{transform:scale(1.03) translateY(-6px)}
+
+  /* ---------- cinematic fullscreen lightbox ---------- */
+  .cinema {
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    background:linear-gradient(180deg, rgba(5,4,6,0.92), rgba(5,4,6,0.96));
+    -webkit-font-smoothing:antialiased;
+    padding:28px;
+  }
+
+  .cinema.open{display:flex}
+
+  .viewer {
+    width:100%;
+    max-width:1400px;
+    height:86vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    user-select:none;
+  }
+
+  /* main picture area - centered and big */
+  .photo-wrap {
+    width:100%;
+    max-width:1200px;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:12px;
+  }
+
+  .photo {
+    max-width:100%;
+    max-height:100%;
+    border-radius:8px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    transition: opacity .32s ease, transform .32s ease;
+    opacity:0;
+    transform: scale(0.995);
+  }
+  .photo.visible { opacity:1; transform:none; }
+
+  /* arrows - large and subtle */
+  .arrow {
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:64px;
+    height:64px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(255,255,255,0.06);
+    color:white;
+    font-size:32px;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,0.06);
+    transition: background .18s, transform .12s;
+    backdrop-filter: blur(6px);
+  }
+  .arrow:hover{ background: rgba(255,255,255,0.12); transform:translateY(-50%) scale(1.05); }
+  .arrow.left{ left:36px; }
+  .arrow.right{ right:36px; }
+
+  /* small top-right close */
+  .close {
+    position:absolute;
+    top:18px;
+    right:22px;
+    color:rgba(255,255,255,0.95);
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:20px;
+  }
+
+  /* caption + counter bottom-right - minimalist */
+  .meta {
+    position:absolute;
+    right:36px;
+    bottom:28px;
+    color:rgba(255,255,255,0.92);
+    text-align:right;
+    font-size:14px;
+    line-height:1.2;
+    max-width:40%;
+    backdrop-filter: blur(6px);
+  }
+  .meta .title{ font-weight:700; font-size:16px; color:#fff; }
+  .meta .sub{ color:rgba(255,255,255,0.8); margin-top:6px; font-size:13px; }
+  .meta .count{ margin-top:8px; color:rgba(255,255,255,0.75); font-weight:600; font-size:13px; }
+
+  /* small screens adjustments */
+  @media (max-width:900px){
+    .arrow{ width:52px; height:52px; font-size:26px; left:16px; right:16px; }
+    .meta{ right:18px; left:18px; bottom:18px; text-align:center; max-width:unset; }
+  }
+  @media (max-width:600px){
+    .photo{ max-height:72vh; }
+    .thumb img{height:200px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">B</div>
+    <div>
+      <h1 style="margin:0;font-family:'Playfair Display',serif;">BABYLON</h1>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">Reserve</a>
+    <a href="menu.html">Menu</a>
+    <a href="gallery.html" class="active">Gallery</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<section class="intro">
+  <h2>Our Space - Photo series</h2>
+  <p>Click any image to view it in cinematic fullscreen. Use ← → or swipe to move between photos.</p>
+</section>
+
+<main class="grid" id="grid">
+  <figure class="thumb" data-index="0"><img src="images/img1.jpg" alt="Warm evening seating" data-caption="Warm evening seating at Babylon"></figure>
+  <figure class="thumb" data-index="1"><img src="images/img2.jpg" alt="Spacious courtyard" data-caption="Spacious courtyard with greenery"></figure>
+  <figure class="thumb" data-index="2"><img src="images/img3.jpg" alt="Outdoor lounge" data-caption="Outdoor lounge with layered levels"></figure>
+  <figure class="thumb" data-index="3"><img src="images/img4.jpg" alt="Bar counter" data-caption="Bar counter with intimate lighting"></figure>
+  <figure class="thumb" data-index="4"><img src="images/img5.jpg" alt="Exterior facade" data-caption="Exterior facade and approach"></figure>
+  <figure class="thumb" data-index="5"><img src="images/img6.jpg" alt="Long dining aisle" data-caption="Long dining aisle with textures"></figure>
+  <figure class="thumb" data-index="6"><img src="images/img7.jpg" alt="Outdoor tables" data-caption="Cozy outdoor tables beneath greenery"></figure>
+</main>
+
+<!-- cinematic fullscreen viewer -->
+<div class="cinema" id="cinema" aria-hidden="true">
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="photo-wrap" id="photoWrap">
+      <button class="arrow left" id="prevBtn" aria-label="Previous">‹</button>
+      <img id="mainPhoto" class="photo" src="" alt="">
+      <button class="arrow right" id="nextBtn" aria-label="Next">›</button>
+      <button class="close" id="closeBtn" aria-label="Close">✕</button>
+    </div>
+
+    <div class="meta" aria-hidden="false">
+      <div class="title" id="metaTitle">Title</div>
+      <div class="sub" id="metaSub">Subtitle</div>
+      <div class="count" id="metaCount">1 / 7</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const thumbs = Array.from(document.querySelectorAll('.thumb img'));
+  const cinema = document.getElementById('cinema');
+  const mainPhoto = document.getElementById('mainPhoto');
+  const metaTitle = document.getElementById('metaTitle');
+  const metaSub = document.getElementById('metaSub');
+  const metaCount = document.getElementById('metaCount');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let current = 0;
+  const total = thumbs.length;
+
+  // prepare items array
+  const items = thumbs.map(t => ({
+    src: t.getAttribute('src'),
+    alt: t.alt || '',
+    caption: t.dataset.caption || ''
+  }));
+
+  // open viewer
+  function open(index){
+    current = (index + total) % total;
+    show(items[current]);
+    cinema.classList.add('open');
+    cinema.style.display = 'flex';
+    cinema.setAttribute('aria-hidden','false');
+    // focus for keyboard usage
+    closeBtn.focus();
+    preload((current+1)%total);
+    preload((current-1+total)%total);
+  }
+
+  // close viewer
+  function close(){
+    cinema.classList.remove('open');
+    cinema.setAttribute('aria-hidden','true');
+    setTimeout(()=> cinema.style.display = 'none', 260);
+    // clear image for performance
+    mainPhoto.src = '';
+  }
+
+  // show item with fade
+  function show(item){
+    mainPhoto.classList.remove('visible');
+    // small delay for fade-out -> change src -> fade-in
+    setTimeout(()=>{
+      mainPhoto.src = item.src;
+      mainPhoto.alt = item.alt;
+      metaTitle.textContent = item.caption || item.alt || 'Babylon';
+      metaSub.textContent = '';
+      metaCount.textContent = (current+1) + ' / ' + total;
+    }, 120);
+    // fade in once loaded
+    mainPhoto.onload = ()=> {
+      requestAnimationFrame(()=> mainPhoto.classList.add('visible'));
+    };
+  }
+
+  function next(){
+    current = (current + 1) % total;
+    show(items[current]);
+    preload((current+1)%total);
+  }
+  function prev(){
+    current = (current - 1 + total) % total;
+    show(items[current]);
+    preload((current-1+total)%total);
+  }
+
+  function preload(i){
+    const it = items[i];
+    if(!it) return;
+    const img = new Image();
+    img.src = it.src;
+  }
+
+  // attach click handlers on thumbs
+  thumbs.forEach((img, idx) => {
+    img.addEventListener('click', ()=> open(idx));
+  });
+
+  // controls
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  closeBtn.addEventListener('click', close);
+
+  // keyboard nav
+  document.addEventListener('keydown', (e)=>{
+    if(cinema.style.display !== 'flex') return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowRight') next();
+    if(e.key === 'ArrowLeft') prev();
+  });
+
+  // backdrop click closes if clicking outside image
+  cinema.addEventListener('click', (e)=>{
+    if(e.target === cinema) close();
+  });
+
+  // swipe support for touch
+  (function(){
+    let startX=0, startY=0, distX=0, distY=0, thresh = 70;
+    const wrap = document.getElementById('photoWrap');
+    wrap.addEventListener('touchstart', function(e){
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; distX = distY = 0;
+    }, {passive:true});
+    wrap.addEventListener('touchmove', function(e){
+      const t = e.touches[0];
+      distX = t.clientX - startX;
+      distY = t.clientY - startY;
+    }, {passive:true});
+    wrap.addEventListener('touchend', function(){
+      if(Math.abs(distX) > Math.abs(distY) && Math.abs(distX) > thresh){
+        if(distX < 0) next(); else prev();
+      }
+      startX = startY = distX = distY = 0;
+    });
+  })();
+
+  // Expose for debugging if needed
+  window.openGallery = open;
+})();
+</script>
+
+</body>
+</html>

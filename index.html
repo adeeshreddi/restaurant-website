@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Babylon — Premium Reservations</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #fff8fb;
+    --card: #ffffff;
+    --accent-1: #ff5f95;
+    --accent-2: #ff8fb0;
+    --muted: #6c5558;
+    --glass: rgba(255,255,255,0.7);
+    --shadow-1: 0 12px 40px rgba(18,12,14,0.06);
+    --radius: 16px;
+    --max-w: 1200px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#fff);font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:#23181a;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  .wrap{max-width:var(--max-w);margin:28px auto;padding:20px}
+
+  /* header */
+  header.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{
+    width:64px;height:64px;border-radius:14px;
+    background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:22px;box-shadow:0 8px 30px rgba(255,95,149,0.12)
+  }
+  .brand h1{margin:0;font-family:'Playfair Display';font-size:18px}
+  nav{display:flex;gap:16px;align-items:center}
+  nav a{font-weight:600;text-decoration:none;color:#24181a;opacity:0.95}
+  nav a.cta{background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;padding:8px 12px;border-radius:10px;font-weight:700}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:start}
+  @media(max-width:980px){ .grid{grid-template-columns:1fr; } header.top{flex-direction:column;align-items:flex-start;gap:12px} }
+
+  /* LEFT - hero + content */
+  .left{display:flex;flex-direction:column;gap:16px}
+  .hero{
+    position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(245,199,217,0.15);box-shadow:var(--shadow-1);min-height:320px;background:linear-gradient(180deg,#fff,#fff7fb);
+    display:flex;flex-direction:column;
+  }
+  .hero img{width:100%;height:320px;object-fit:cover;display:block}
+  .hero .hero-info{position:absolute;left:20px;bottom:20px;color:white;text-shadow:0 12px 30px rgba(0,0,0,0.45)}
+  .hero h2{margin:0;font-family:'Playfair Display';font-size:26px;line-height:1}
+  .hero p{margin:8px 0 0 0;color:rgba(255,255,255,0.95);font-weight:600}
+
+  .glass{
+    background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,250,252,0.95));
+    border-radius:12px;padding:16px;border:1px solid rgba(245,199,217,0.08);box-shadow:0 10px 30px rgba(12,8,10,0.03)
+  }
+
+  .about .title{font-family:'Playfair Display';font-size:16px;margin:0}
+  .about p.lead{margin:8px 0 0 0;color:var(--muted);line-height:1.45;font-size:14px}
+
+  .mini-blogs{display:grid;grid-template-columns:1fr;gap:12px}
+  .blog-card{display:flex;gap:12px;align-items:flex-start;background:var(--card);padding:12px;border-radius:12px;border:1px solid rgba(239,205,215,0.18);box-shadow:0 8px 30px rgba(11,8,10,0.03)}
+  .blog-thumb{width:86px;height:64px;border-radius:10px;object-fit:cover;flex-shrink:0}
+  .blog-card h4{margin:0;font-size:15px}
+  .blog-card p{margin:6px 0 0 0;color:var(--muted);font-size:13px}
+
+  /* RIGHT - reservation */
+  .right{display:flex;justify-content:flex-end}
+  .reserve{
+    width:100%;max-width:520px;background:linear-gradient(180deg,#fff,#fff7fb);border-radius:18px;padding:22px;border:1px solid rgba(245,199,217,0.16);box-shadow:0 22px 70px rgba(11,8,10,0.06)
+  }
+  .reserve h3{margin:0;font-family:'Playfair Display';font-size:20px}
+  .muted{color:var(--muted);font-size:13px;margin-top:6px}
+  .field{margin-top:12px;display:flex;flex-direction:column}
+  .row{display:flex;gap:10px}
+  .col{flex:1}
+  label{font-size:13px;color:#4a3436;margin-bottom:8px;font-weight:700}
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select{
+    padding:12px;border-radius:10px;border:1px solid rgba(36,20,22,0.06);background:transparent;font-size:14px;outline:none;
+    transition: box-shadow .14s, transform .06s;
+  }
+  input:focus, select:focus{box-shadow:0 8px 26px rgba(255,95,149,0.06);transform:translateY(-1px)}
+  select.time{appearance:none;padding-right:36px;background-image:linear-gradient(45deg,transparent 50%, rgba(36,20,22,0.45) 50%), linear-gradient(135deg, rgba(36,20,22,0.45) 50%, transparent 50%);background-position:calc(100% - 14px) calc(1em + 2px), calc(100% - 10px) calc(1em + 2px);background-size:6px 6px,6px 6px;background-repeat:no-repeat}
+
+  .confirm-row{display:flex;align-items:flex-start;gap:12px;margin-top:12px}
+  .confirm-row label{font-weight:700;font-size:14px;margin:0}
+
+  .btn{
+    width:100%;margin-top:16px;padding:14px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white;font-weight:800;cursor:pointer;font-size:15px;
+    box-shadow:0 8px 30px rgba(255,95,149,0.12);
+  }
+  .btn[disabled]{opacity:0.6;cursor:default}
+
+  /* modal */
+  .backdrop{position:fixed;inset:0;background:rgba(7,6,7,0.6);display:none;align-items:center;justify-content:center;z-index:1300;padding:18px}
+  .modal{width:96%;max-width:520px;background:linear-gradient(180deg,#fff,#fff7fb);border-radius:12px;padding:18px;box-shadow:0 40px 120px rgba(11,8,10,0.6);transform:translateY(10px);opacity:0;transition:all .26s}
+  .modal.open{transform:none;opacity:1}
+  .modal h4{margin:0;font-family:'Playfair Display'}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+  .chip{padding:8px 12px;border-radius:999px;background:rgba(245,199,217,0.12);font-weight:700}
+
+  /* small screens */
+  @media(max-width:720px){
+    .hero img{height:180px}
+    .hero .hero-info h2{font-size:20px}
+    .reserve{padding:18px}
+  }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div>
+          <h1>BABYLON</h1>
+          <div class="small muted">Premium Pub & Night Kitchen</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="index.html">Reserve</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html" class="cta">Contact</a>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <aside class="left">
+        <section class="hero">
+          <!-- update this src to images/hero.jpg if you want -->
+          <img src="images/hero.jpg" alt="Babylon interior" onerror="this.src='images/img1.jpg';" />
+          <div class="hero-info" style="display:none">
+            <h2>Evenings at Babylon</h2>
+            <p>Cocktails • Food • Warm Nights</p>
+          </div>
+        </section>
+
+        <div class="glass about">
+          <div class="title">Welcome to Babylon</div>
+          <p class="lead muted">A warm premium pub experience — velvet lights, handcrafted cocktails, and refined plates. Reserve a table to enjoy our signature drinks and curated nights.</p>
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <a href="menu.html" class="read-link" style="padding:8px 10px;border-radius:10px;border:1px solid rgba(43,34,35,0.06)">See menu</a>
+            <a href="contact.html" class="read-link" style="padding:8px 10px;border-radius:10px;background:linear-gradient(90deg,var(--accent-1),var(--accent-2));color:white">Contact</a>
+          </div>
+        </div>
+
+        <div class="mini-blogs">
+          <article class="blog-card">
+            <img class="blog-thumb" src="images/img2.jpg" alt="" onerror="this.style.display='none'"/>
+            <div>
+              <h4>Signature Cocktails — Top 5</h4>
+              <p>Handcrafted mixers with seasonal ingredients. Our bartenders craft each drink to pair with the menu.</p>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <img class="blog-thumb" src="images/img3.jpg" alt="" onerror="this.style.display='none'"/>
+            <div>
+              <h4>Live DJ Nights</h4>
+              <p>Curated beats every Friday and Saturday. Arrive early for best seating and the happiest hour.</p>
+            </div>
+          </article>
+
+          <article class="blog-card">
+            <img class="blog-thumb" src="images/img4.jpg" alt="" onerror="this.style.display='none'"/>
+            <div>
+              <h4>Chef’s Seasonal Grill</h4>
+              <p>Wood-fired plates with bold flavors, designed for sharing and pairing with cocktails.</p>
+            </div>
+          </article>
+        </div>
+      </aside>
+
+      <!-- RIGHT -->
+      <main class="right">
+        <form id="resForm" class="reserve" action="/reserve" method="POST">
+          <h3>Reserve a Table</h3>
+          <div class="muted">Reservations accepted between 11:30 AM and 11:00 PM</div>
+
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="e.g. Arjun Rao" required>
+          </div>
+
+          <div class="row">
+            <div class="col field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+91 9XXXXXXXXX" required>
+            </div>
+            <div class="col field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@domain.com" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col field">
+              <label for="guests">Guests</label>
+              <input id="guests" name="guests" type="number" min="1" max="20" value="2" required>
+            </div>
+            <div class="col field">
+              <label for="date">Date</label>
+              <input id="date" name="date" type="date" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col field">
+              <label for="time">Time</label>
+              <select id="time" name="time" class="time" required>
+                <option>11:30 AM</option><option>12:00 PM</option><option>12:30 PM</option>
+                <option>01:00 PM</option><option>01:30 PM</option><option>02:00 PM</option>
+                <option>02:30 PM</option><option>03:00 PM</option><option>03:30 PM</option>
+                <option>04:00 PM</option><option>04:30 PM</option><option>05:00 PM</option>
+                <option>05:30 PM</option><option>06:00 PM</option><option>06:30 PM</option>
+                <option>07:00 PM</option><option>07:30 PM</option><option>08:00 PM</option>
+                <option>08:30 PM</option><option>09:00 PM</option><option>09:30 PM</option>
+                <option>10:00 PM</option><option>10:30 PM</option><option>11:00 PM</option>
+              </select>
+            </div>
+
+            <div class="col field">
+              <label style="opacity:0.85;">Age confirmation</label>
+              <div class="confirm-row">
+                <input id="confirm" name="confirm" type="checkbox" style="width:18px;height:18px" required>
+                <label for="confirm">I confirm every guest is 18+</label>
+              </div>
+            </div>
+          </div>
+
+          <button id="submitBtn" class="btn" type="submit">Request Reservation</button>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="backdrop" class="backdrop" role="dialog" aria-hidden="true">
+    <div id="modal" class="modal" role="document">
+      <h4>Reservation received</h4>
+      <div id="modalText" class="small muted" style="margin-top:8px">We will contact you shortly to confirm.</div>
+      <div class="meta" style="margin-top:10px">
+        <div><strong>Name:</strong> <span id="mName"></span></div>
+        <div><strong>Date:</strong> <span id="mDate"></span></div>
+        <div><strong>Time:</strong> <span id="mTime"></span></div>
+      </div>
+      <div style="margin-top:12px">
+        <div><strong>Email status:</strong> <span id="mEmail" class="chip"></span></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:14px">
+        <button id="closeBtn" class="btn" style="width:auto;padding:10px 14px">Return to site</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // modal controls
+  const backdrop = document.getElementById('backdrop');
+  const modal = document.getElementById('modal');
+  const closeBtn = document.getElementById('closeBtn');
+
+  function openModal(data){
+    document.getElementById('mName').textContent = data.name || '';
+    document.getElementById('mDate').textContent = data.date || '';
+    document.getElementById('mTime').textContent = data.time || '';
+    document.getElementById('mEmail').textContent = data.email_status || 'unknown';
+    backdrop.style.display = 'flex';
+    setTimeout(()=>modal.classList.add('open'),15);
+    backdrop.setAttribute('aria-hidden','false');
+    modal.focus();
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    backdrop.setAttribute('aria-hidden','true');
+    setTimeout(()=>backdrop.style.display='none',260);
+  }
+  closeBtn.addEventListener('click', ()=>{ closeModal(); window.scrollTo({top:0, behavior:'smooth'}); });
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+
+  // form handling
+  const form = document.getElementById('resForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!document.getElementById('confirm').checked){
+      alert('Please confirm every guest is 18+');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const data = new FormData(form);
+
+    fetch(form.action, { method: 'POST', body: data, headers: {'X-Requested-With':'XMLHttpRequest'} })
+      .then(async res=>{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Reservation';
+        if(!res.ok){
+          let txt = await res.text();
+          try{ const j = JSON.parse(txt); alert(j.message || 'Reservation failed'); }
+          catch(e){ alert('Reservation failed: ' + txt); }
+          return;
+        }
+        const json = await res.json();
+        openModal(json);
+        form.reset();
+      })
+      .catch(err=>{
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Reservation';
+        alert('Network error. Please try again.');
+        console.error(err);
+      });
+  });
+</script>
+</body>
+</html>
